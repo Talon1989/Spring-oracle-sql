@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import springoraclesql.demo.repository.BookRepository;
 import springoraclesql.demo.service.SqlService;
 
 import java.sql.*;
@@ -14,10 +15,12 @@ import java.util.List;
 public class IndexController {
 
     private SqlService sqlService;
+    private BookRepository bookRepository;
 
     @Autowired
-    public IndexController(SqlService sqlService) {
+    public IndexController(SqlService sqlService, BookRepository bookRepository) {
         this.sqlService = sqlService;
+        this.bookRepository = bookRepository;
     }
 
     @GetMapping("/")
@@ -29,6 +32,7 @@ public class IndexController {
             List<String> list = listResultSet(rs);
             model.addAttribute("resultSet", list);
             System.out.println(list.size());
+            System.out.println(bookRepository.findOne(1L).getBookName());
         } catch (SQLException e) {
             e.printStackTrace();
         }
